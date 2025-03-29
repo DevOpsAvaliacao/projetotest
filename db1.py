@@ -1,14 +1,17 @@
 import PySimpleGUI as sg
 import datetime
-
+import os
 
 def registrar_log(mensagem):
     with open("audit_log.txt", "a") as log:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        log.write(f"[{timestamp}] {mensagem}\n")
-
+        ip_ficticio = "192.168.1.100"  
+        log.write(f"[{timestamp}] [IP: {ip_ficticio}] {mensagem}\n")
 
 def realizarLogin(usuario, senha):
+    if not os.path.exists('logins.txt'):
+        open('logins.txt', 'w').close()
+    
     try:
         with open('logins.txt', 'r') as arquivoUsuario:
             logins = arquivoUsuario.readlines()
@@ -23,7 +26,6 @@ def realizarLogin(usuario, senha):
 
     registrar_log(f"Tentativa de login falhou para {usuario} - Credenciais incorretas")
     return False
-
 
 def cadastrarLogin(usuarioCadastro, senhaCadastro):
     with open('logins.txt', 'a') as arquivoUsuario:
